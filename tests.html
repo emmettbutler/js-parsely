@@ -1,0 +1,26 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Parsely Tests</title>
+  <link rel="stylesheet" href="lib/mocha/mocha.css" />
+  <script src="lib/jquery-1.7.1.min.js"></script>
+  <script src="lib/chai/chai.js"></script>
+  <script src="lib/mocha/mocha.js"></script>
+  <script src="parsely.js"></script>
+  <script>mocha.setup('bdd')</script>
+  <script>
+    function assert(expr, msg) {
+      if (!expr) throw new Error(msg || 'failed');
+    }
+  </script>
+  <script src="test.parsely.js"></script>
+  <script>
+    $(function() {
+      mocha.run();
+    })
+  </script>
+</head>
+<body>
+  <div id="mocha"></div>
+</body>
+</html>
