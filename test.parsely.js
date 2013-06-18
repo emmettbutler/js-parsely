@@ -27,11 +27,22 @@ describe('Parsely', function() {
     })
   })
 
-  describe('request_endpoint()', function(){
+  describe('_request_endpoint()', function(){
     it('should get some JSON', function(done){
       parsely.authenticate(publickey, secretkey, function(success){});
-      parsely.request_endpoint('/analytics/posts', {}, function(res){
+      parsely._request_endpoint('/analytics/posts', {}, function(res){
         assert.isTrue(res != undefined && res.hasOwnProperty('data'));
+        done();
+      })
+    })
+  })
+
+  describe('analytics()', function(){
+    it('should return ten posts', function(done){
+      parsely.authenticate(publickey, secretkey, function(success){});
+      parsely.analytics(function(res){
+        assert.isTrue(res.data.length == 10);
+        assert.isTrue(res.data[3].hasOwnProperty("author"));
         done();
       })
     })

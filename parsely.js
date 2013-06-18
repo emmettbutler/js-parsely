@@ -21,6 +21,16 @@ var Parsely = function(){
         });
     };
 
+    function _format_arguments(days, start, end, pub_start, pub_end, sort, limit,
+                               page){
+        return {
+            'sort':  sort,
+            'days':  days,
+            'limit': limit,
+            'page':  page
+        };
+    }
+
     var _request_endpoint = function(endpoint, options, callback){
         var url = root_url + endpoint + "?apikey=" + public_key + "&";
         url += "secret=" + secret_key + "&";
@@ -32,8 +42,10 @@ var Parsely = function(){
             }
         }
 
-        var callback_name = '_parsely_callback';
+        console.log(url);
+
         // set up the jsonp callback
+        var callback_name = '_parsely_callback';
         window[callback_name] = function(reply){ callback(reply); };
 
         var script = document.createElement("script");
@@ -41,9 +53,19 @@ var Parsely = function(){
         document.getElementsByTagName("head")[0].appendChild(script);
     };
 
+    var analytics = function(callback, aspect, days, start, end, pub_start,
+                             pub_end, sort, limit, page){
+        if(typeof(aspect)==='undefined') aspect = 'posts';
+
+        options = _format_arguments(days, start, end, pub_start, pub_end,
+                                    sort, limit, page);
+        _request_endpoint('/analytics/' + aspect, options, callback);
+    };
+
     return {
         authenticate: authenticate,
-        request_endpoint: _request_endpoint,
+        analytics: analytics,
+        _request_endpoint: _request_endpoint,
 
         public_key: get_public_key,
         secret_key: get_secret_key,
