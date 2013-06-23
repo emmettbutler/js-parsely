@@ -27,6 +27,15 @@ describe('Parsely', function() {
     })
   })
 
+  describe('RequestOptions builder', function(){
+    it('should builid properly', function(){
+      var options = new RequestOptions();
+      console.log("butt");
+      console.log(options);
+      assert.equal(options.days, 3);
+    })
+  })
+
   describe('_request_endpoint()', function(){
     it('should get some JSON', function(done){
       parsely.authenticate(publickey, secretkey, function(success){});
