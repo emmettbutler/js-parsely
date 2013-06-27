@@ -27,12 +27,18 @@ describe('Parsely', function() {
     })
   })
 
-  describe('RequestOptions builder', function(){
-    it('should builid properly', function(){
-      var options = new RequestOptions();
-      console.log("butt");
-      console.log(options);
-      assert.equal(options.days, 3);
+  describe('Request options', function(){
+    parsely.setOption('days', 5);
+    parsely.setOption('page', 4);
+    it('should build properly', function(){
+      assert.isTrue(parsely.getOptions().days == 5);
+      assert.isTrue(parsely.getOptions().page == 4);
+    })
+    it('should provide default values', function(){
+      assert.isTrue(parsely.getOptions().limit == 10);
+    })
+    it('should render to a url string', function(){
+      assert.isTrue(false);
     })
   })
 

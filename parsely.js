@@ -1,88 +1,19 @@
-var RequestOptions = (function(){
-    var Builder = function(){
-        this.days = 14;
-        this.limit = 10;
-        this.page = 1;
-        this.sort = "_hits";
-
-        var withDays = function(d){
-            this.days = d;
-            return this;
-        };
-
-        var withLimit = function(l){
-            this.limit = l;
-            return this;
-        };
-
-        var withPage = function(p){
-            this.page = p;
-            return this;
-        };
-
-        var withSort = function(s){
-            this.sort = s;
-            return this;
-        };
-
-        var withDateRange = function(start, end){
-            this.start = start;
-            this.end = end;
-            return this;
-        };
-
-        var withPubDateRange = function(start, end){
-            this.pub_start = start;
-            this.pub_end = end;
-            return this;
-        };
-
-        var build = function(){
-            console.log(this);
-            return new RequestOptions(this);
-        };
-
-        return {
-            withDays: withDays,
-            withLimit: withLimit,
-            withPage: withPage,
-            withSort: withSort,
-            withDateRange: withDateRange,
-            withPubDateRange: withPubDateRange,
-            build: build
-        };
-    };
-
-    var cls = function(_builder){
-        var builder = function(){
-            console.log(this);
-            return new Builder();
-        };
-
-        this.days = _builder.days;
-        this.limit = _builder.limit;
-        this.page = _builder.page;
-        this.sort = _builder.sort;
-        this.start = _builder.start;
-        this.end = _builder.end;
-        this.pub_start = _builder.pub_start;
-        this.pub_end = _builder.pub_end;
-    };
-
-    return cls;
-
-    /*return {
-        builder: builder,
-    };*/
-})();
-
 var Parsely = function(){
     var public_key = "",
         secret_key = "",
-        root_url = "http://api.parsely.com/v2";
+        root_url = "http://api.parsely.com/v2",
+        options = { 'days': 14, 'limit': 10, 'page': 1,
+                    'sort': '_hits', 'start': undefined,
+                    'end': undefined, 'pub_start': undefined,
+                    'pub_end': undefined };
 
     var get_public_key = function(){ return public_key; }
     var get_secret_key = function(){ return secret_key; }
+    var getOptions = function(){ return options; }
+    var setOption = function(name, value){
+        options[name] = value;
+        return this;
+    }
 
     var authenticate = function(publickey, secretkey, callback){
         public_key = publickey;
@@ -147,5 +78,7 @@ var Parsely = function(){
 
         public_key: get_public_key,
         secret_key: get_secret_key,
+        getOptions: getOptions,
+        setOption: setOption,
     };
 };
