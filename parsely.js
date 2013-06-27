@@ -2,10 +2,14 @@ var Parsely = function(){
     var public_key = "",
         secret_key = "",
         root_url = "http://api.parsely.com/v2",
+        default_options = { 'days': 14, 'limit': 10, 'page': 1,
+                    'sort': '_hits', 'start': '',
+                    'end': '', 'pub_date_start': '',
+                    'pub_date_end': '' },
         options = { 'days': 14, 'limit': 10, 'page': 1,
-                    'sort': '_hits', 'start': undefined,
-                    'end': undefined, 'pub_start': undefined,
-                    'pub_end': undefined };
+                    'sort': '_hits', 'start': '',
+                    'end': '', 'pub_date_start': '',
+                    'pub_date_end': '' };
 
     var get_public_key = function(){ return public_key; }
     var get_secret_key = function(){ return secret_key; }
@@ -36,7 +40,14 @@ var Parsely = function(){
         for (var key in options) {
             if (options.hasOwnProperty(key)) {
                 if (options[key]){
-                    url += key + "=" + options[key] + "&";
+                    var to_append = options[key];
+                    if(Object.prototype.toString.call(to_append) === "[object Date]"){
+                        var _dt = to_append.getDate();
+                        var _mt = to_append.getMonth() + 1;
+                        var _yr = to_append.getFullYear();
+                        to_append = _yr + "-" + _mt + "-" + _dt;
+                    }
+                    url += key + "=" + to_append + "&";
                 }
             }
         }
@@ -52,10 +63,12 @@ var Parsely = function(){
         document.getElementsByTagName("head")[0].appendChild(script);
     };
 
-    var analytics = function(callback, aspect, days, start, end, pub_start,
-                             pub_end, sort, limit, page){
-        if(typeof(aspect)==='undefined') aspect = 'posts';
+    var clearOptions = function(){
+        options = default_options;
+    };
 
+    var analytics = function(callback, aspect){
+        if(typeof(aspect)==='undefined') aspect = 'posts';
         _request_endpoint('/analytics/' + aspect, options, callback);
     };
 
@@ -68,5 +81,6 @@ var Parsely = function(){
         secret_key: get_secret_key,
         getOptions: getOptions,
         setOption: setOption,
+        clearOptions: clearOptions,
     };
 };

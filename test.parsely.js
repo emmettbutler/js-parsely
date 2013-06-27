@@ -37,9 +37,6 @@ describe('Parsely', function() {
     it('should provide default values', function(){
       assert.isTrue(parsely.getOptions().limit == 10);
     })
-    it('should render to a url string', function(){
-      assert.isTrue(false);
-    })
   })
 
   describe('_request_endpoint()', function(){
@@ -53,11 +50,31 @@ describe('Parsely', function() {
   })
 
   describe('analytics()', function(){
+    parsely.authenticate(publickey, secretkey, function(success){});
     it('should return ten posts', function(done){
-      parsely.authenticate(publickey, secretkey, function(success){});
       parsely.analytics(function(res){
         assert.isTrue(res.data.length == 10);
         assert.isTrue(res.data[3].hasOwnProperty("author"));
+        done();
+      })
+    })
+    it('should honor limit parameter', function(done){
+      parsely.clearOptions();
+      parsely.setOption('limit', 3);
+      parsely.analytics(function(res){
+        assert.isTrue(res.data.length == 3);
+        done();
+      })
+    })
+    it('should honor start and end dates', function(done){
+      var test_date = new Date("6/1/2013");
+      parsely.clearOptions();
+      parsely.setOption('pub_date_start', test_date);
+      parsely.setOption('pub_date_end', new Date('6/2/2013'));
+      parsely.setOption('limit', 1);
+      parsely.analytics(function(res){
+        var ret_date = new Date(res.data[0].pub_date);
+        assert.isTrue(ret_date.getDate() == test_date.getDate());
         done();
       })
     })
