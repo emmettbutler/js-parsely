@@ -30,16 +30,6 @@ var Parsely = function(){
         });
     };
 
-    function _format_arguments(days, start, end, pub_start, pub_end, sort, limit,
-                               page){
-        return {
-            'sort':  sort,
-            'days':  days,
-            'limit': limit,
-            'page':  page
-        };
-    }
-
     var _request_endpoint = function(endpoint, options, callback){
         var url = root_url + endpoint + "?apikey=" + public_key + "&";
         url += "secret=" + secret_key + "&";
@@ -66,8 +56,6 @@ var Parsely = function(){
                              pub_end, sort, limit, page){
         if(typeof(aspect)==='undefined') aspect = 'posts';
 
-        options = _format_arguments(days, start, end, pub_start, pub_end,
-                                    sort, limit, page);
         _request_endpoint('/analytics/' + aspect, options, callback);
     };
 
