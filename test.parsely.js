@@ -27,7 +27,7 @@ describe('Parsely', function() {
     })
   })
 
-  describe('Request options', function(){
+  describe('request options', function(){
     parsely.setOption('days', 5);
     parsely.setOption('page', 4);
     it('should build properly', function(){
@@ -39,26 +39,16 @@ describe('Parsely', function() {
     })
   })
 
-  describe('_request_endpoint()', function(){
-    it('should get some JSON', function(done){
-      parsely.authenticate(publickey, secretkey, function(success){});
-      parsely._request_endpoint('/analytics/posts', {}, function(res){
-        assert.isTrue(res != undefined && res.hasOwnProperty('data'));
-        done();
-      })
-    })
-  })
-
   describe('analytics()', function(){
-    parsely.authenticate(publickey, secretkey, function(success){});
     it('should return ten posts', function(done){
+      parsely.authenticate(publickey, secretkey, function(success){});
       parsely.analytics(function(res){
         assert.isTrue(res.data.length == 10);
         assert.isTrue(res.data[3].hasOwnProperty("author"));
         done();
       })
     })
-    it('should honor limit parameter', function(done){
+    it('should return less posts when asked', function(done){
       parsely.clearOptions();
       parsely.setOption('limit', 3);
       parsely.analytics(function(res){
@@ -77,6 +67,15 @@ describe('Parsely', function() {
         assert.isTrue(ret_date.getDate() == test_date.getDate());
         done();
       })
+    })
+    it('should return authors when asked', function(done){
+      parsely.clearOptions();
+      parsely.analytics(function(res){
+        assert.isTrue(res.data[0].author !== undefined);
+        assert.isTrue(res.data[0]._hits !== undefined);
+        assert.isTrue(res.data[0].pub_date === undefined);
+        done();
+      }, 'authors')
     })
   })
 })

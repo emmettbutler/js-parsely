@@ -7,38 +7,15 @@ var Parsely = function(){
 
     }
 
-    var public_key = "",
-        secret_key = "",
+    var _public_key = "",
+        _secret_key = "",
         root_url = "http://api.parsely.com/v2",
         default_options = _build_defaults(),
         options = _build_defaults();
 
-    var get_public_key = function(){ return public_key; }
-    var get_secret_key = function(){ return secret_key; }
-    var getOptions = function(){ return options; }
-    var setOption = function(name, value){
-        options[name] = value;
-        return this;
-    }
-
-    var authenticate = function(publickey, secretkey, callback){
-        public_key = publickey;
-        secret_key = secretkey;
-
-        _request_endpoint('/analytics/posts', {}, function(data){
-            if(callback != undefined){
-                if(data.code == 403 && data.success == false){
-                    callback(false);
-                } else {
-                    callback(true);
-                }
-            }
-        });
-    };
-
     var _request_endpoint = function(endpoint, options, callback){
-        var url = root_url + endpoint + "?apikey=" + public_key + "&";
-        url += "secret=" + secret_key + "&";
+        var url = root_url + endpoint + "?apikey=" + _public_key + "&";
+        url += "secret=" + _secret_key + "&";
         for (var key in options) {
             if (options.hasOwnProperty(key)) {
                 if (options[key]){
@@ -65,24 +42,38 @@ var Parsely = function(){
         document.getElementsByTagName("head")[0].appendChild(script);
     };
 
-    var clearOptions = function(){
-        options = default_options;
-    };
-
-    var analytics = function(callback, aspect){
-        if(typeof(aspect)==='undefined') aspect = 'posts';
-        _request_endpoint('/analytics/' + aspect, options, callback);
-    };
-
     return {
-        authenticate: authenticate,
-        analytics: analytics,
-        _request_endpoint: _request_endpoint,
+        public_key: function(){ return _public_key; },
+        secret_key: function(){ return _secret_key; },
+        getOptions: function(){ return options; },
+        setOption: function(name, value){
+            options[name] = value;
+            return this;
+        },
 
-        public_key: get_public_key,
-        secret_key: get_secret_key,
-        getOptions: getOptions,
-        setOption: setOption,
-        clearOptions: clearOptions,
+        authenticate: function(publickey, secretkey, callback){
+            _public_key = publickey,
+            _secret_key = secretkey,
+
+            _request_endpoint('/analytics/posts', {}, function(data){
+                if(callback != undefined){
+                    if(data.code == 403 && data.success == false){
+                        callback(false);
+                    } else {
+                        callback(true);
+                    }
+                }
+            });
+        },
+
+        analytics: function(callback, aspect){
+            if(typeof(aspect)==='undefined') aspect = 'posts';
+            _request_endpoint('/analytics/' + aspect, options, callback);
+        },
+
+
+        clearOptions: function(){
+            options = default_options;
+        }
     };
 };
