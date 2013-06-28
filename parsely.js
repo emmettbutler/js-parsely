@@ -1,15 +1,17 @@
 var Parsely = function(){
-    var public_key = "",
-        secret_key = "",
-        root_url = "http://api.parsely.com/v2",
-        default_options = { 'days': 14, 'limit': 10, 'page': 1,
-                    'sort': '_hits', 'start': '',
-                    'end': '', 'pub_date_start': '',
-                    'pub_date_end': '' },
-        options = { 'days': 14, 'limit': 10, 'page': 1,
+    function _build_defaults(){
+        return { 'days': 14, 'limit': 10, 'page': 1,
                     'sort': '_hits', 'start': '',
                     'end': '', 'pub_date_start': '',
                     'pub_date_end': '' };
+
+    }
+
+    var public_key = "",
+        secret_key = "",
+        root_url = "http://api.parsely.com/v2",
+        default_options = _build_defaults(),
+        options = _build_defaults();
 
     var get_public_key = function(){ return public_key; }
     var get_secret_key = function(){ return secret_key; }
