@@ -10,7 +10,6 @@ var Parsely = function(){
     var _public_key = "",
         _secret_key = "",
         root_url = "http://api.parsely.com/v2",
-        default_options = _build_defaults(),
         options = _build_defaults();
 
     var _request_endpoint = function(endpoint, options, callback){
@@ -73,14 +72,19 @@ var Parsely = function(){
 
         post_detail: function(callback, post){
             var url = post.hasOwnProperty('url') ? post.url : post;
-            var _options = {};
-            _options.url = url;
-            _options.days = options.days;
+            var _options = {'url': url, 'days': options.days};
             _request_endpoint('/analytics/post/detail', _options, callback);
         },
 
+        meta_detail: function(callback, meta_obj, aspect){
+            var value = meta_obj.hasOwnProperty(aspect) ? meta_obj[aspect] : meta_obj;
+            if(typeof(aspect)==='undefined') aspect = 'author';
+            _request_endpoint('/analytics/' + aspect + '/' + value + '/detail',
+                              options, callback);
+        },
+
         clearOptions: function(){
-            options = default_options;
+            options = _build_defaults();
         }
     };
 };

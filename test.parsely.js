@@ -28,13 +28,20 @@ describe('Parsely', function() {
   })
 
   describe('request options', function(){
-    parsely.setOption('days', 5);
-    parsely.setOption('page', 4);
     it('should build properly', function(){
+      parsely.setOption('days', 5);
+      parsely.setOption('page', 4);
       assert.isTrue(parsely.getOptions().days == 5);
       assert.isTrue(parsely.getOptions().page == 4);
     })
     it('should provide default values', function(){
+      parsely.setOption('days', 5);
+      parsely.setOption('page', 4);
+      assert.isTrue(parsely.getOptions().limit == 10);
+    })
+    it('should clear to defaults', function(){
+      parsely.setOption('limit', 69);
+      parsely.clearOptions();
       assert.isTrue(parsely.getOptions().limit == 10);
     })
   })
@@ -95,6 +102,27 @@ describe('Parsely', function() {
           assert.isTrue(res.data[0].url === _res.data[0].url);
           done();
         }, _res.data[0])
+      })
+    })
+  })
+
+  describe('meta_detail()', function(){
+    it('should return posts from the given section when given a string', function(done){
+      parsely.clearOptions();
+      var section = 'Technology Lab';
+      parsely.meta_detail(function(res){
+        console.log(res);
+        assert.isTrue(res.data[3].section === section);
+        done();
+      }, section, 'section')
+    })
+    it('should return posts from the given section when given a post', function(done){
+      parsely.clearOptions();
+      var post = parsely.analytics(function(_res){
+        parsely.meta_detail(function(res){
+          assert.isTrue(res.data[0].section === _res.data[0].section);
+          done();
+        }, _res.data[0], 'section')
       })
     })
   })
