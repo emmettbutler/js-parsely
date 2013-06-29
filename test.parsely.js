@@ -78,4 +78,24 @@ describe('Parsely', function() {
       }, 'authors')
     })
   })
+
+  describe('post_detail()', function(){
+    it('should return the post referenced by url', function(done){
+      var url = "http://arstechnica.com/tech-policy/2013/06/teenage-wikileaks-volunteer-why-i-served-as-an-fbi-informant/";
+      parsely.clearOptions();
+      parsely.post_detail(function(res){
+        assert.isTrue(res.data[0].url === url);
+        done();
+      }, url)
+    })
+    it('should return the post referenced by object', function(done){
+      parsely.clearOptions();
+      var post = parsely.analytics(function(_res){
+        parsely.post_detail(function(res){
+          assert.isTrue(res.data[0].url === _res.data[0].url);
+          done();
+        }, _res.data[0])
+      })
+    })
+  })
 })

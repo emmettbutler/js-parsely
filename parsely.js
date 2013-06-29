@@ -71,6 +71,13 @@ var Parsely = function(){
             _request_endpoint('/analytics/' + aspect, options, callback);
         },
 
+        post_detail: function(callback, post){
+            var url = post.hasOwnProperty('url') ? post.url : post;
+            var _options = {};
+            _options.url = url;
+            _options.days = options.days;
+            _request_endpoint('/analytics/post/detail', _options, callback);
+        },
 
         clearOptions: function(){
             options = default_options;
