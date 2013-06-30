@@ -185,10 +185,39 @@ describe('Parsely', function() {
     })
     it('should return data objects when not given a url', function(done){
       parsely.shares(function(res){
-        console.log(res);
         assert.isTrue(res.data[1]._shares > 0)
         done();
       })
+    })
+  })
+
+  describe('realtime()', function(){
+    it('should return some posts', function(done){
+      parsely.clearOptions();
+      parsely.realtime(function(res){
+        assert.isTrue(res.data[0]._hits > 0);
+        done();
+      })
+    })
+  })
+
+  describe('related()', function(){
+    it('should return some posts', function(done){
+      parsely.clearOptions();
+      parsely.related(function(res){
+        assert.isTrue(res.data[0].title !== '');
+        done();
+      }, 'http://arstechnica.com/information-technology/2013/04/memory-that-never-forgets-non-volatile-dimms-hit-the-market/')
+    })
+  })
+
+  describe('search()', function(){
+    it('should return some posts', function(done){
+      parsely.clearOptions();
+      parsely.related(function(res){
+        assert.isTrue(res.data[0].title !== '');
+        done();
+      }, 'security')
     })
   })
 })

@@ -34,7 +34,9 @@ var Parsely = function(){
 
         // set up the jsonp callback
         var callback_name = '_parsely_callback';
-        window[callback_name] = function(reply){ callback(reply); };
+        window[callback_name] = function(reply){
+            callback(reply);
+        };
 
         var script = document.createElement("script");
         script.src = url + "callback=" + callback_name + "&";
@@ -132,6 +134,28 @@ var Parsely = function(){
                     'limit': options.limit, 'page': options.page
                 }, callback);
             }
+        },
+
+        realtime: function(callback, aspect, per){
+            var _options = {'limit': options.limit, 'page': options.page};
+            if(per){
+                // TODO - document this expectation since it's nonstandard
+                _options['time'] = per.hasOwnProperty('hours') ? per.hours + 'h' : per.minutes + 'm';
+            }
+            if(typeof(aspect)==='undefined') aspect = 'posts';
+            _request_endpoint('/realtime/' + aspect, _options, callback);
+        },
+
+        related: function(callback, url){
+            var _options = {'url': url}
+            for (var attr in options) { _options[attr] = options[attr]; }
+            _request_endpoint('/related', _options, callback);
+        },
+
+        search: function(callback, query){
+            var _options = {'q': query}
+            for (var attr in options) { _options[attr] = options[attr]; }
+            _request_endpoint('/search', _options, callback);
         },
 
         clearOptions: function(){
