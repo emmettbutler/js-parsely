@@ -46,6 +46,7 @@ var Parsely = function(){
         secret_key: function(){ return _secret_key; },
         getOptions: function(){ return options; },
         setOption: function(name, value){
+            // TODO - this needs to ensure that dates always come in pairs
             options[name] = value;
             return this;
         },
@@ -81,6 +82,56 @@ var Parsely = function(){
             if(typeof(aspect)==='undefined') aspect = 'author';
             _request_endpoint('/analytics/' + aspect + '/' + value + '/detail',
                               options, callback);
+        },
+
+        referrers: function(callback, ref_type, section, tag, domain){
+            if(typeof(ref_type)==='undefined') ref_type = 'social';
+            var _options = {'section': section, 'tag': tag, 'domain': domain}
+            for (var attr in options) { _options[attr] = options[attr]; }
+            _request_endpoint('/referrers/' + ref_type, _options, callback);
+        },
+
+        referrers_meta: function(callback, ref_type, meta, section, domain){
+            if(typeof(ref_type)==='undefined') ref_type = 'social';
+            if(typeof(meta)==='undefined') meta = 'posts';
+            var _options = {'section': section, 'domain': domain}
+            for (var attr in options) { _options[attr] = options[attr]; }
+            _request_endpoint('/referrers/' + ref_type + '/' + meta,
+                              _options, callback);
+        },
+
+        referrers_meta_detail: function(callback, meta_obj, ref_type, meta, domain){
+            if(typeof(ref_type)==='undefined') ref_type = 'social';
+            if(typeof(meta)==='undefined') meta = 'author';
+            var value = meta_obj.hasOwnProperty(meta) ? meta_obj[meta] : meta_obj;
+            var _options = {'domain': domain}
+            for (var attr in options) { _options[attr] = options[attr]; }
+            _request_endpoint('/referrers/' + ref_type + '/' + meta + '/' + value + '/detail',
+                              _options, callback);
+        },
+
+        referrers_post_detail: function(callback, post){
+            var url = post.hasOwnProperty('url') ? post.url : post;
+            var _options = {'url': url}
+            for (var attr in options) { _options[attr] = options[attr]; }
+            _request_endpoint('/referrers/post/detail', _options, callback);
+        },
+
+        shares: function(callback, aspect, post){
+            var url;
+            if(post){
+                url = post.hasOwnProperty('url') ? post.url : post;
+            }
+            if(url){
+                _request_endpoint('/shares/post/detail', {'url': url}, callback);
+            } else {
+                if(typeof(aspect)==='undefined') aspect = 'posts';
+                _request_endpoint('/shares/' + aspect, {
+                    'pub_days': options.days, 'pub_date_start': options.pub_date_start,
+                    'pub_date_end': options.pub_date_end,
+                    'limit': options.limit, 'page': options.page
+                }, callback);
+            }
         },
 
         clearOptions: function(){

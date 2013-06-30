@@ -111,18 +111,83 @@ describe('Parsely', function() {
       parsely.clearOptions();
       var section = 'Technology Lab';
       parsely.meta_detail(function(res){
-        console.log(res);
         assert.isTrue(res.data[3].section === section);
         done();
       }, section, 'section')
     })
     it('should return posts from the given section when given a post', function(done){
       parsely.clearOptions();
-      var post = parsely.analytics(function(_res){
+      parsely.analytics(function(_res){
         parsely.meta_detail(function(res){
           assert.isTrue(res.data[0].section === _res.data[0].section);
           done();
         }, _res.data[0], 'section')
+      })
+    })
+  })
+
+  describe('referrers()', function(){
+    it('should return some referrers', function(done){
+      var tag = 'copyright';
+      parsely.clearOptions();
+      parsely.referrers(function(res){
+        assert.isTrue(res.data[0]._hits > 0);
+        done();
+      }, undefined, undefined, tag, undefined)
+    })
+  })
+
+  describe('referrers_meta()', function(){
+    it('should return some data objects', function(done){
+      parsely.clearOptions();
+      parsely.referrers_meta(function(res){
+        assert.isTrue(res.data[0]._hits > 0);
+        done();
+      })
+    })
+  })
+
+  describe('referrers_meta_detail()', function(){
+    it('should return some data objects', function(done){
+      parsely.clearOptions();
+      parsely.referrers_meta_detail(function(res){
+        assert.isTrue(res.data[0]._hits > 0);
+        done();
+      }, 'Ars Staff', undefined, 'author', undefined)
+    })
+  })
+
+  describe('referrers_post_detail()', function(){
+    it('should return some data when given a url', function(done){
+      parsely.clearOptions();
+      parsely.referrers_post_detail(function(res){
+        assert.isTrue(res.data[0]._hits > 0);
+        done();
+      }, 'http://arstechnica.com/information-technology/2013/04/memory-that-never-forgets-non-volatile-dimms-hit-the-market/')
+    })
+    it('should return some data when given a post', function(done){
+      parsely.analytics(function(_res){
+        parsely.referrers_post_detail(function(res){
+          assert.isTrue(res.data[0]._hits > 0);
+          done();
+        }, _res.data[0], 'section')
+      })
+    })
+  })
+
+  describe('shares()', function(){
+    it('should return post details when given a url', function(done){
+      parsely.clearOptions();
+      parsely.shares(function(res){
+        assert.isTrue(res.data[0].total > 0)
+        done();
+      }, undefined, 'http://arstechnica.com/information-technology/2013/04/memory-that-never-forgets-non-volatile-dimms-hit-the-market/')
+    })
+    it('should return data objects when not given a url', function(done){
+      parsely.shares(function(res){
+        console.log(res);
+        assert.isTrue(res.data[1]._shares > 0)
+        done();
       })
     })
   })
