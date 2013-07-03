@@ -202,12 +202,19 @@ describe('Parsely', function() {
   })
 
   describe('related()', function(){
-    it('should return some posts', function(done){
+    it('should return some posts when given a url', function(done){
       parsely.clearOptions();
       parsely.related(function(res){
         assert.isTrue(res.data[0].title !== '');
         done();
       }, 'http://arstechnica.com/information-technology/2013/04/memory-that-never-forgets-non-volatile-dimms-hit-the-market/')
+    })
+    it('should return some posts when given a uuid', function(done){
+      parsely.clearOptions();
+      parsely.related(function(res){
+        assert.isTrue(res.data[0].title !== '');
+        done();
+      }, 'emmett9001')
     })
   })
 
@@ -218,6 +225,24 @@ describe('Parsely', function() {
         assert.isTrue(res.data[0].title !== '');
         done();
       }, 'security')
+    })
+  })
+
+  describe('train()', function(){
+    it('should return success', function(done){
+      parsely.train(function(res){
+        assert.isTrue(res.success);
+        done();
+      }, 'http://arstechnica.com/information-technology/2013/04/memory-that-never-forgets-non-volatile-dimms-hit-the-market/', 'emmett9001')
+    })
+  })
+
+  describe('history()', function(){
+    it('should return a list of urls', function(done){
+      parsely.history(function(res){
+        assert.isTrue(res.data.urls.length > 0);
+        done();
+      }, 'emmett9001')
     })
   })
 })

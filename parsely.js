@@ -40,6 +40,7 @@ var Parsely = function(){
 
         var script = document.createElement("script");
         script.src = url + "callback=" + callback_name + "&";
+        script.id = 'parsely-jsonp';
         document.getElementsByTagName("head")[0].appendChild(script);
     };
 
@@ -146,8 +147,12 @@ var Parsely = function(){
             _request_endpoint('/realtime/' + aspect, _options, callback);
         },
 
-        related: function(callback, url){
-            var _options = {'url': url}
+        related: function(callback, identifier){
+            var key = 'uuid';
+            if(identifier.indexOf("https://") !== -1 || identifier.indexOf("http://") !== -1){
+                key = 'url';
+            }
+            var _options = {key: identifier}
             for (var attr in options) { _options[attr] = options[attr]; }
             _request_endpoint('/related', _options, callback);
         },
@@ -156,6 +161,16 @@ var Parsely = function(){
             var _options = {'q': query}
             for (var attr in options) { _options[attr] = options[attr]; }
             _request_endpoint('/search', _options, callback);
+        },
+
+        train: function(callback, post, uuid){
+            var url = post.hasOwnProperty('url') ? post.url : post;
+            var _options = {'uuid': uuid, 'url': url}
+            _request_endpoint('/profile', _options, callback);
+        },
+
+        history: function(callback, uuid){
+            _request_endpoint('/history', {'uuid': uuid}, callback);
         },
 
         clearOptions: function(){
