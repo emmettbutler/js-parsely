@@ -1,4 +1,32 @@
+/**
+ *
+ * Copyright (C) 2013 Emmett Butler, Parsely Inc.
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *   js-parsely is a simple binding for the Parsely API with no external
+ *   dependencies.
+ *
+ *   @version 1.0.0
+ *   @url http://github.com/emmett9001/js-parsely
+ */
 var Parsely = function(){
+    /**
+     * set default values used by most of the API endpoint methods
+     *
+     * @return {Object}
+     */
     function _build_defaults(){
         return { 'days': 14, 'limit': 10, 'page': 1,
                     'sort': '_hits', 'start': '',
@@ -7,8 +35,32 @@ var Parsely = function(){
 
     }
 
+    /*
+     * public Parsely API key (for example, "mysite.com"
+     *
+     * this is sent to the API with every request for authentication
+     *
+     * @type {string}
+     */
     var _public_key = "",
+
+        /*
+         *  secret Parsely API key
+         *
+         *  used for authentication via shared secret
+         *  sent to the API with every request
+         *
+         *  @type {string}
+         */
         _secret_key = "",
+
+        /*
+         *  The root of the Parsely API
+         *
+         *  Defines the base location to which all API requests are sent
+         *
+         *  @type {string}
+         */
         root_url = "http://api.parsely.com/v2",
         options = _build_defaults();
 
