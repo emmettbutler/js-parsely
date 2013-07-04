@@ -69,17 +69,20 @@ var Parsely = function(){
             });
         },
 
+        // http://parsely.com/api/api_ref.html#method-analytics
         analytics: function(callback, aspect){
             if(typeof(aspect)==='undefined') aspect = 'posts';
             _request_endpoint('/analytics/' + aspect, options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-analytics-post-detail
         post_detail: function(callback, post){
             var url = post.hasOwnProperty('url') ? post.url : post;
             var _options = {'url': url, 'days': options.days};
             _request_endpoint('/analytics/post/detail', _options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-analytics-detail
         meta_detail: function(callback, meta_obj, aspect){
             var value = meta_obj.hasOwnProperty(aspect) ? meta_obj[aspect] : meta_obj;
             if(typeof(aspect)==='undefined') aspect = 'author';
@@ -87,6 +90,7 @@ var Parsely = function(){
                               options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-referrer
         referrers: function(callback, ref_type, section, tag, domain){
             if(typeof(ref_type)==='undefined') ref_type = 'social';
             var _options = {'section': section, 'tag': tag, 'domain': domain}
@@ -94,6 +98,7 @@ var Parsely = function(){
             _request_endpoint('/referrers/' + ref_type, _options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-referrer-meta
         referrers_meta: function(callback, ref_type, meta, section, domain){
             if(typeof(ref_type)==='undefined') ref_type = 'social';
             if(typeof(meta)==='undefined') meta = 'posts';
@@ -103,6 +108,7 @@ var Parsely = function(){
                               _options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-referrer-meta-value
         referrers_meta_detail: function(callback, meta_obj, ref_type, meta, domain){
             if(typeof(ref_type)==='undefined') ref_type = 'social';
             if(typeof(meta)==='undefined') meta = 'author';
@@ -113,6 +119,7 @@ var Parsely = function(){
                               _options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-referrer-url
         referrers_post_detail: function(callback, post){
             var url = post.hasOwnProperty('url') ? post.url : post;
             var _options = {'url': url}
@@ -120,6 +127,8 @@ var Parsely = function(){
             _request_endpoint('/referrers/post/detail', _options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-shares (called wtih post)
+        // http://parsely.com/api/api_ref.html#method-share-post-detail (called without post)
         shares: function(callback, aspect, post){
             var url;
             if(post){
@@ -137,6 +146,7 @@ var Parsely = function(){
             }
         },
 
+        // http://parsely.com/api/api_ref.html#method-realtime
         realtime: function(callback, aspect, per){
             var _options = {'limit': options.limit, 'page': options.page};
             if(per){
@@ -147,6 +157,7 @@ var Parsely = function(){
             _request_endpoint('/realtime/' + aspect, _options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-related
         related: function(callback, identifier){
             var key = 'uuid';
             if(identifier.indexOf("https://") !== -1 || identifier.indexOf("http://") !== -1){
@@ -157,18 +168,21 @@ var Parsely = function(){
             _request_endpoint('/related', _options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-search
         search: function(callback, query){
             var _options = {'q': query}
             for (var attr in options) { _options[attr] = options[attr]; }
             _request_endpoint('/search', _options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-profile
         train: function(callback, post, uuid){
             var url = post.hasOwnProperty('url') ? post.url : post;
             var _options = {'uuid': uuid, 'url': url}
             _request_endpoint('/profile', _options, callback);
         },
 
+        // http://parsely.com/api/api_ref.html#method-history
         history: function(callback, uuid){
             _request_endpoint('/history', {'uuid': uuid}, callback);
         },
