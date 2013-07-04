@@ -74,6 +74,19 @@ Always make sure to call `clearOptions` before setting new option values if
 you're making multiple requests and don't want the same options for each
 request.
 
+To set a start or end date for your request, use a JavaScript `Date` object.
+
+    parsely.clearOptions();
+    parsely.setOption('pub_date_start', new Date("6/1/2013"));
+    parsely.setOption('pub_date_end', new Date('6/2/2013'));
+    parsely.analytics(function(res){
+        var ret_date = new Date(res.data[0].pub_date);
+        console.log(ret_date);
+    })
+
+The `pub_date_start`, `pub_date_end`, `start`, and `end` parameters all accept
+js `Date` arguments.
+
 Nesting
 -------
 
