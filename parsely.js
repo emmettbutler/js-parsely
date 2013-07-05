@@ -18,6 +18,7 @@
  *   js-parsely is a simple binding for the Parsely API with no external
  *   dependencies.
  *
+ *   @author Emmett Butler
  *   @version 1.0.0
  *   @url http://github.com/emmett9001/js-parsely
  */
