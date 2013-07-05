@@ -29,8 +29,8 @@ var Parsely = function(){
      */
     function _build_defaults(){
         return { 'days': 14, 'limit': 10, 'page': 1,
-                    'sort': '_hits', 'start': '',
-                    'end': '', 'pub_date_start': '',
+                    'sort': '_hits', 'period_start': '',
+                    'period_end': '', 'pub_date_start': '',
                     'pub_date_end': '' };
 
     }
@@ -40,7 +40,7 @@ var Parsely = function(){
      *
      * this is sent to the API with every request for authentication
      *
-     * @type {string}
+     * @type {String}
      */
     var _public_key = "",
 
@@ -50,7 +50,7 @@ var Parsely = function(){
          *  used for authentication via shared secret
          *  sent to the API with every request
          *
-         *  @type {string}
+         *  @type {String}
          */
         _secret_key = "",
 
@@ -59,9 +59,25 @@ var Parsely = function(){
          *
          *  Defines the base location to which all API requests are sent
          *
-         *  @type {string}
+         *  @type {String}
          */
         root_url = "http://api.parsely.com/v2",
+
+        /*
+         *  The options object
+         *
+         *  Each request function may take advantage of some, all, or none of
+         *  the fields in this object. For reference, they are:
+         *
+         *  days {Number} - how many days since today are factored in to _hits
+         *  limit {Number} - how many records to return
+         *  page {Number} - page number to retrieve if multiple are available
+         *  sort {String} - sorting key
+         *  period_start,period_end {Date} - Period of data to cover
+         *  pub_date_start,pub_date_end {Date} - Publish date range to include
+         *
+         *  @type {Object}
+         */
         options = _build_defaults();
 
     var _request_endpoint = function(endpoint, options, callback){
