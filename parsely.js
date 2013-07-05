@@ -80,6 +80,20 @@ var Parsely = function(){
          */
         options = _build_defaults();
 
+    /*
+     *  Make a request to the given endpoint with the given options object
+     *
+     *  This function is responsible for constructing a properly formed
+     *  Parsely API URL given the options specified. It also requests the API
+     *  in a cross-domain-safe way using JSONP. All three arguments are
+     *  required, although options may be an empty object ({})
+     *
+     *  @param {String} endpoint - string representing the API endpoint (eg '/analytics/')
+     *  @param {Object} options
+     *  @param {function} callback - function to run on request completion
+     *      JSON result is passed to this callback
+     *  @return {void}
+     */
     var _request_endpoint = function(endpoint, options, callback){
         var url = root_url + endpoint + "?apikey=" + _public_key + "&";
         url += "secret=" + _secret_key + "&";
