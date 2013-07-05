@@ -111,8 +111,6 @@ var Parsely = function(){
             }
         }
 
-        console.log(url);
-
         // set up the jsonp callback
         var callback_name = '_parsely_callback';
         window[callback_name] = function(reply){
