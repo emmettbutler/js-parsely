@@ -115,7 +115,7 @@ articles related by semantic content.
 Testing
 -------
 
-This library uses [mocha](http://visionmedia.github.io/mocha/) and
+This library uses [mocha](http://mochajs.org/) and
 [chai](http://chaijs.com/) for testing. Running the tests is easy: just open
 `tests.html` in a browser.
 
